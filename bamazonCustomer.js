@@ -1,6 +1,5 @@
 var inquirer = require('inquirer');
 var mysql = require('mysql2');
-const { start } = require('repl');
 
 let connection = mysql.createConnection({
 
@@ -20,3 +19,9 @@ connection.connect(function(err) {
 
 });
 
+
+function start() {
+
+    console.log('function started.')
+
+}
