@@ -22,6 +22,6 @@ connection.connect(function(err) {
 
 function start() {
 
-    console.log('function started.')
+    console.log('gh test.')
 
 }
