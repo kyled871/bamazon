@@ -1,5 +1,6 @@
 var inquirer = require('inquirer');
 var mysql = require('mysql2');
+const { start } = require('repl');
 
 let connection = mysql.createConnection({
 
@@ -26,7 +27,7 @@ function startBamazon() {
 
 
         let showAllItems = () => {
-            console.log("*** Welcome to Bamazon! ***\n\n")
+            console.log("\n*** Welcome to Bamazon! ***\n\n")
             response.forEach(items => {
                 console.log(`ID: ${items.item_id}\nItem: ${items.product_name}\nDeptartment: ${items.department_name}\nPrice: ${items.price}\nQty: ${items.stock_quantity}\n\n`)
             });
@@ -35,8 +36,6 @@ function startBamazon() {
         itemChoose()
 
 
-        // must end connection when done <<<<<<<<<<<<<<<<<<<<<<<<<<
-        // connection.end();
         function itemChoose() {
         
             inquirer.prompt([
@@ -74,11 +73,9 @@ function startBamazon() {
 
                     let chosenItem;
                     let currentQty;
-                    
-                    
-                    let productQty = results.stock_quantity
+
                     if (err) throw err;
-                    
+
                     for (i = 0; i < results.length; i++) {
                         if (itemID === results[i].item_id) {
                             chosenItem = results[i];
@@ -88,14 +85,26 @@ function startBamazon() {
 
                     }
 
-                    console.log(currentQty)
-                    console.log(userQty)
-                    console.log(chosenItem)
 
                     if (userQty <= currentQty) {
 
-                        console.log(`Successful Order!`)
+                        connection.query(
+                            "UPDATE products SET ? WHERE ?",
+                            [
+                                {
+                                    stock_quantity: currentQty - userQty
+                                },
+                                {
+                                    item_id: chosenItem.item_id
+                                }
+                            ],
+                            function(error) {
+                                if (error) throw error;
+                                console.log(`\n\nSuccessful Order! \nEnjoy your order of ${userQty} ${chosenItem.product_name}!\n----------------------------------\n`)
+                                endBamazon()
+                            }
 
+                        )
 
                     }
 
@@ -120,6 +129,28 @@ function startBamazon() {
 
     });
 
+}
+
+function endBamazon() {
+
+    inquirer.prompt([
+
+        {
+            type: 'confirm',
+            name: 'exit',
+            message: 'Would you like to place another order?',
+            default: true
+        }
+
+    ]).then(function(answers) {
+
+        if (answers.exit) {
+            startBamazon();
+        } else {
+            console.log(`*** Bamazon Thanks You! ***\n\n`);
+            connection.end();
+        }
+    })
 }
 
 
