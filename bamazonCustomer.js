@@ -110,13 +110,11 @@ function startBamazon() {
 
                     
                     // if itemID doesn't exist or qty is too high return message and start over
-                    if (userQty > chosenItem.stock_quantity) {
-                        console.log(`Sorry! Your qty it too high. Only ${chosenItem.stock_quantity} left!`)
-                        itemChoose();
-                    }
-
                     if (itemID > results.length || itemID === 0) {
-                        console.log(`Sorry! Item: ${itemID} does not exist. Please select another: \n`)
+                        console.log(`\nSorry! Item: ${itemID} does not exist. Please select another: \n`)
+                        itemChoose();
+                    } else if (userQty > chosenItem.stock_quantity) {
+                        console.log(`\nSorry! Your qty it too high. Only ${chosenItem.stock_quantity} left!`)
                         itemChoose();
                     }
                     
