@@ -86,7 +86,7 @@ function startBamazon() {
                     }
 
 
-                    if (userQty <= currentQty) {
+                    if (userQty <= currentQty && userQty > 0) {
 
                         connection.query(
                             "UPDATE products SET ? WHERE ?",
@@ -106,6 +106,9 @@ function startBamazon() {
 
                         )
 
+                    } else {
+                        console.log(`\nSo you're telling me you want ${userQty} ${chosenItem.product_name}?\nTry again hotshot....\n\n`)
+                        itemChoose()
                     }
 
                     
@@ -116,7 +119,7 @@ function startBamazon() {
                     } else if (userQty > chosenItem.stock_quantity) {
                         console.log(`\nSorry! Your qty it too high. Only ${chosenItem.stock_quantity} left!`)
                         itemChoose();
-                    }
+                    } 
                     
                 });
 
