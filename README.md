@@ -7,7 +7,7 @@
 - If the user's order is successful they will receive a success message along with the choice to with place another order or exit. The quanitity chosen will also be subtracted from the databases amount.
 
 ## Example:
-[example](example.gif)
+[example](/example.gif)
 
 ## Tools Used:
 This assignment showcased the ability for `node` and `inquirer` packages to communicate with **MySQL** and make changes to databases using javascript.
