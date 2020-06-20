@@ -15,38 +15,65 @@ connection.connect(function(err) {
     if (err) throw err;
 
     console.log(`Connected as id ${connection.threadId}. \n`);
-    showItems()
+    startBamazon()
     // start();
 
 });
 
-function showItems() {
+function startBamazon() {
     connection.query("SELECT * FROM products", function(err, response) {
         if (err) throw err;
 
 
-        let allItems = () => {
-            console.log("*** Welcome to Bamazon! ***")
+        let showAllItems = () => {
+            console.log("*** Welcome to Bamazon! ***\n\n")
             response.forEach(items => {
-                console.log(`ID: ${items.item_id}\nItem: ${items.product_name}\nDept Name: ${items.department_name}\nPrice: ${items.price}\n\n`)
+                console.log(`ID: ${items.item_id}\nItem: ${items.product_name}\nDeptartment: ${items.department_name}\nPrice: ${items.price}\n\n`)
             });
         }
-        allItems()
+        showAllItems()
+        itemChoose()
 
-        connection.end();
-      });
+
+        // must end connection when done
+        // connection.end();
+        function itemChoose() {
+        
+            inquirer.prompt([
+                
+                {
+                    name: "productID",
+                    type: "input",
+                    message: "Please select the item ID you wish to purchase: ",
+                    validate: function(value) {
+                        if (isNaN(value) === false) {
+                            return true;
+                        }
+                        return false;
+                    }
+                },
+
+                {
+                    name: "quantity",
+                    type: "input",
+                    message: "Please select QTY: ",
+                    validate: function(value) {
+                        if (isNaN(value) === false) {
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+                
+            ]).then(function(answer) {
+
+
+
+            })
+        
+        }
+    });
 
 }
 
 
-// function start() {
-
-//     inquirer.prompt([
-//         {
-
-
-
-//         }
-//     ])
-
-// }
