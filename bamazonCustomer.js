@@ -29,7 +29,7 @@ function startBamazon() {
         let showAllItems = () => {
             console.log("*** Welcome to Bamazon! ***\n\n")
             response.forEach(items => {
-                console.log(`ID: ${items.item_id}\nItem: ${items.product_name}\nDeptartment: ${items.department_name}\nPrice: ${items.price}\n\n`)
+                console.log(`ID: ${items.item_id}\nItem: ${items.product_name}\nDeptartment: ${items.department_name}\nPrice: ${items.price}\nQty: ${items.stock_quantity}\n\n`)
             });
         }
         showAllItems()
