@@ -41,14 +41,15 @@ function startBamazon() {
                 
                 {
                     name: "productID",
-                    type: "input",
+                    type: "rawlist",
+                    choices: function() {
+                        let choiceArr = [];
+                        response.forEach(items => {
+                            choiceArr.push(items.product_name)
+                        })
+                        return choiceArr;
+                    },
                     message: "Please select the item ID you wish to purchase: ",
-                    validate: function(value) {
-                        if (isNaN(value) === false) {
-                            return true;
-                        }
-                        return false;
-                    }
                 },
 
                 {
@@ -67,7 +68,7 @@ function startBamazon() {
                 connection.query("SELECT * FROM products", function(err , results) {
 
 
-                    let itemID = parseInt(answers.productID);
+                    let itemID = answers.productID;
                     let userQty = parseInt(answers.quantity);
 
                     let chosenItem;
@@ -76,7 +77,7 @@ function startBamazon() {
                     if (err) throw err;
 
                     for (i = 0; i < results.length; i++) {
-                        if (itemID === results[i].item_id) {
+                        if (itemID === results[i].product_name) {
                             chosenItem = results[i];
                             currentQty = results[i].stock_quantity
                             
