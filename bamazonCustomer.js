@@ -1,5 +1,6 @@
 var inquirer = require('inquirer');
 var mysql = require('mysql2');
+const { forEach } = require('mysql2/lib/constants/charset_encodings');
 
 let connection = mysql.createConnection({
 
@@ -35,7 +36,7 @@ function startBamazon() {
         itemChoose()
 
 
-        // must end connection when done
+        // must end connection when done <<<<<<<<<<<<<<<<<<<<<<<<<<
         // connection.end();
         function itemChoose() {
         
@@ -65,7 +66,35 @@ function startBamazon() {
                     }
                 }
                 
-            ]).then(function(answer) {
+            ]).then(function(answers) {
+                connection.query("SELECT * FROM products", function(err , results) {
+
+                    
+                    let itemID = parseInt(answers.productID);
+                    let qty = parseInt(answers.quantity);
+                    
+                    let productID = results.forEach(item =>{
+                        item.item_id
+                    })
+
+                    let productQty = results.stock_quantity
+                    if (err) throw err;
+                    
+                    for (i = 0; i < results.length; i++) {
+                       if (itemID === results[i].item_id) {
+                           chosenItem = results[i];
+                       }
+                    }
+
+                    if (itemID > results.length) {
+                        console.log(`Sorry! Item: ${itemID} does not exist. Please select another: \n`)
+                        itemChoose();
+                    }
+                }
+
+
+
+                )
 
 
 
