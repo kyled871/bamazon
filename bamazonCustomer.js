@@ -1,13 +1,12 @@
 var inquirer = require('inquirer');
 var mysql = require('mysql2');
-const { start } = require('repl');
-
+require('dotenv').config();
 let connection = mysql.createConnection({
 
     host: "localhost",
     port: "3306",
     user: "root",
-    password: "rootroot",
+    password: process.env.password,
     database: "bamazon_db",
 
 });
@@ -153,5 +152,3 @@ function endBamazon() {
         }
     })
 }
-
-
