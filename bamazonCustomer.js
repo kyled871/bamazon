@@ -100,7 +100,7 @@ function startBamazon() {
                             ],
                             function(error) {
                                 if (error) throw error;
-                                console.log(`\n\nSuccessful Order! \nEnjoy your order of ${userQty} ${chosenItem.product_name}!\n----------------------------------\n`)
+                                console.log(`\n----------------------------------\nSuccessful Order!\nEnjoy your order of ${userQty} ${chosenItem.product_name}!\n----------------------------------\n`)
                                 endBamazon()
                             }
 
@@ -145,7 +145,7 @@ function endBamazon() {
         if (answers.exit) {
             startBamazon();
         } else {
-            console.log(`*** Bamazon Thanks You! ***\n\n`);
+            console.log(`\n--------------------------------------\n*** Bamazon Thanks You! ***\n--------------------------------------\n`);
             connection.end();
         }
     })
