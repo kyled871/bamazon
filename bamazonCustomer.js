@@ -1,6 +1,5 @@
 var inquirer = require('inquirer');
 var mysql = require('mysql2');
-const { forEach } = require('mysql2/lib/constants/charset_encodings');
 
 let connection = mysql.createConnection({
 
@@ -71,23 +70,38 @@ function startBamazon() {
 
 
                     let itemID = parseInt(answers.productID);
-                    let qty = parseInt(answers.quantity);
+                    let userQty = parseInt(answers.quantity);
 
                     let chosenItem;
+                    let currentQty;
                     
-
+                    
                     let productQty = results.stock_quantity
                     if (err) throw err;
                     
                     for (i = 0; i < results.length; i++) {
                         if (itemID === results[i].item_id) {
                             chosenItem = results[i];
+                            currentQty = results[i].stock_quantity
+                            
                         }
 
                     }
+
+                    console.log(currentQty)
+                    console.log(userQty)
+                    console.log(chosenItem)
+
+                    if (userQty <= currentQty) {
+
+                        console.log(`Successful Order!`)
+
+
+                    }
+
                     
                     // if itemID doesn't exist or qty is too high return message and start over
-                    if (qty > chosenItem.stock_quantity) {
+                    if (userQty > chosenItem.stock_quantity) {
                         console.log(`Sorry! Your qty it too high. Only ${chosenItem.stock_quantity} left!`)
                         itemChoose();
                     }
