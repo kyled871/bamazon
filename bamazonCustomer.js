@@ -69,38 +69,41 @@ function startBamazon() {
             ]).then(function(answers) {
                 connection.query("SELECT * FROM products", function(err , results) {
 
-                    
+
                     let itemID = parseInt(answers.productID);
                     let qty = parseInt(answers.quantity);
+
+                    let chosenItem;
                     
-                    let productID = results.forEach(item =>{
-                        item.item_id
-                    })
 
                     let productQty = results.stock_quantity
                     if (err) throw err;
                     
                     for (i = 0; i < results.length; i++) {
-                       if (itemID === results[i].item_id) {
-                           chosenItem = results[i];
-                       }
+                        if (itemID === results[i].item_id) {
+                            chosenItem = results[i];
+                        }
+
+                    }
+                    
+                    // if itemID doesn't exist or qty is too high return message and start over
+                    if (qty > chosenItem.stock_quantity) {
+                        console.log(`Sorry! Your qty it too high. Only ${chosenItem.stock_quantity} left!`)
+                        itemChoose();
                     }
 
-                    if (itemID > results.length) {
+                    if (itemID > results.length || itemID === 0) {
                         console.log(`Sorry! Item: ${itemID} does not exist. Please select another: \n`)
                         itemChoose();
                     }
-                }
-
-
-
-                )
-
+                    
+                });
 
 
             })
         
         }
+
     });
 
 }
