@@ -31,9 +31,9 @@ function optionChoices() {
         
     ]).then(function(answers) {
 
-        let managersAnswer = answers.options
+        let managerAnswer = answers.options
 
-        switch (managersAnswer) {
+        switch (managerAnswer) {
             case 'View Products for Sale':
                 viewProducts();
                 break;
@@ -97,9 +97,111 @@ function lowInventory() {
 };
 
 function addInventory() {
+    connection.query("SELECT * FROM products", function(err, res) {
+
+        inquirer.prompt([
+
+            {
+                name: "productID",
+                type: "rawlist",
+                choices: function() {
+                    let choiceArr = [];
+                    res.forEach(items => {
+                        choiceArr.push(items.product_name)
+                    })
+                    return choiceArr;
+                },
+                message: "Add inventory to which item?: ",
+            },
+
+            {
+                name: "addQty",
+                type: 'input',
+                validate: function(value) {
+                    if (isNaN(value) === false) {
+                        return true;
+                    }
+                    return false;
+                },
+                message: `Add qty amount: `
+            }
+
+        ]).then(function(answer) {
+            connection.query("SELECT * FROM products", function(err, res) {
+                let itemID = answer.productID;
+                let userQty = parseInt(answer.addQty);
+                let chosenItem;
+                let currentQty;
+
+                if (err) throw err;
+
+                res.forEach(item => {
+                    if (itemID === item.product_name) {
+                        chosenItem = item;
+                        currentQty = item.stock_quantity;
+                    }
+                })
+                
+                if (userQty > 0) {
+
+                    connection.query(
+                        "UPDATE products SET ? WHERE ?" ,
+                        [
+
+                            {
+                                stock_quantity: currentQty + userQty
+                            },
+                            {
+                                item_id: chosenItem.item_id
+                            }
+                        ],
+                        function(err) {
+                            if (err) throw err;
+                            console.log(`\n${chosenItem.product_name} qty has been updated!`);
+                            console.log(`Current Qty is now: ${currentQty + userQty}\n--------------------\n`);
+                            endBamazon();
+                        });
+
+                } else {
+                    console.log(`Qty is invalid. Please try again.`)
+                    addInventory()
+                }
+            })
+
+
+
+        })
+
+
+
+
+    })
 
 };
 
 function addProduct() {
 
 };
+
+
+function endBamazon() {
+
+    inquirer.prompt([
+
+        {
+            type: 'confirm',
+            name: 'exit',
+            message: 'Select another option?',
+            default: true
+        }
+
+    ]).then(function(answers) {
+
+        if (answers.exit) {
+            startManagerView();
+        } else {
+            console.log(`\n--------------------------------------\n*** Bamazon Thanks You! ***\n--------------------------------------\n`);
+            connection.end();
+        }
+    })
+}
