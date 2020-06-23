@@ -23,6 +23,7 @@ connection.connect(function(err) {
 function startManagerView() {
 
     function optionChoices() {
+
         console.log(`\nWelcome Bamazon Manager!\n`)
         inquirer.prompt([
             {
@@ -34,8 +35,28 @@ function startManagerView() {
             
         ]).then(function(answers) {
 
-            console.log(answers)
+            let managersAnswer = answers.options
 
+            switch (managersAnswer) {
+                case 'View Products for Sale':
+                console.log('here are the products')
+                    break;
+
+                case 'View Low Inventory':
+                    console.log('here is the low inventory')
+                    break;
+
+                case 'Add to Inventory':
+                    console.log('added to inventory')
+                    break;
+
+                case 'Add New Product':
+                    console.log('add to products!')
+                    break;
+            
+                default:
+                    break;
+            }
 
         })
         
