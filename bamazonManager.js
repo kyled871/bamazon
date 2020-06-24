@@ -11,6 +11,8 @@ let connection = mysql.createConnection({
 
 });
 
+
+// starts managerView function upon connection ----------
 connection.connect(function(err) {
     if (err) throw err;
 
@@ -19,6 +21,8 @@ connection.connect(function(err) {
 
 });
 
+
+// functions for each choice opens automatically with startManagerView function --------------------------------
 function optionChoices() {
 
     inquirer.prompt([
@@ -66,7 +70,7 @@ function startManagerView() {
 };
 
 
-// functions for each choice --------------------------------
+// returns all products in mysql database ------------------------
 function viewProducts() {
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
@@ -80,6 +84,8 @@ function viewProducts() {
 
 };
 
+
+// returns all products in database with a stock_quantity lower than 20 ------------------
 function lowInventory() {
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
@@ -96,6 +102,8 @@ function lowInventory() {
 
 };
 
+
+// updates database stock_quantity value with user input ------------------
 function addInventory() {
     connection.query("SELECT * FROM products", function(err, res) {
 
@@ -176,6 +184,7 @@ function addInventory() {
 };
 
 
+// adds a new row with column data to database --------------
 function addProduct() {
 
     console.log(`Please enter the new product: \n`);
@@ -240,7 +249,7 @@ function addProduct() {
                 console.log(`\nSuccess!\n${productName} has been added!`);
                 endBamazon()
             }
-            
+
         )
 
     })
@@ -248,6 +257,7 @@ function addProduct() {
 };
 
 
+// function is ran at the end of every tasks to ask user if the need to select another option or end connection --------------
 function endBamazon() {
 
     inquirer.prompt([
