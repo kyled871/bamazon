@@ -75,7 +75,7 @@ function viewProducts() {
         res.forEach(item => {
             console.log(`ID: ${item.item_id}\nItem: ${item.product_name}\nPrice: ${item.price}\nQty: ${item.stock_quantity}\n\n`);      
         });
-        optionChoices();
+        endBamazon();
     });
 
 };
@@ -91,7 +91,7 @@ function lowInventory() {
             }
         });
 
-        optionChoices();
+        endBamazon();
     });
 
 };
@@ -166,20 +166,84 @@ function addInventory() {
                     console.log(`Qty is invalid. Please try again.`)
                     addInventory()
                 }
-            })
 
+            });
 
-
-        })
-
-
-
+        });
 
     })
 
 };
 
+
 function addProduct() {
+
+    console.log(`Please enter the new product: \n`);
+
+    inquirer.prompt([
+
+        {
+            type: 'input',
+            name: 'product_name',
+            message: 'Product Name: '
+        },
+
+        {
+            type: 'input',
+            name: 'department_name',
+            message: 'Dept Name: '
+        },
+
+        {
+            type: 'input',
+            name: 'price',
+            validate: function(value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                return false;
+            },
+            message: 'Price: '
+        },
+
+        {
+            type: 'input',
+            name: 'stock_quantity',
+            validate: function(value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                return false;
+            },
+            message: 'Set Initial Stock: '
+        }
+
+    ]).then(function(answers) {
+
+        let productName = answers.product_name;
+        let deptName = answers.department_name;
+        let setPrice = parseInt(answers.price);
+        let initStock = parseInt(answers.stock_quantity);
+
+        console.log(productName)
+
+        connection.query(
+            "INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES (?, ?, ?, ?)",
+            [
+                productName,
+                deptName,
+                setPrice,
+                initStock,
+
+            ],function(err) {
+                if (err) throw err;
+                console.log(`\nSuccess!\n${productName} has been added!`);
+                endBamazon()
+            }
+            
+        )
+
+    })
 
 };
 
