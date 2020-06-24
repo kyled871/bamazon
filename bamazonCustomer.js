@@ -11,6 +11,8 @@ let connection = mysql.createConnection({
 
 });
 
+
+// start function is ran on initial connection -------------
 connection.connect(function(err) {
     if (err) throw err;
 
@@ -20,6 +22,8 @@ connection.connect(function(err) {
 
 });
 
+
+// function runs a query to mysql returning all current items -------------
 function startBamazon() {
     connection.query("SELECT * FROM products", function(err, response) {
         if (err) throw err;
@@ -35,6 +39,7 @@ function startBamazon() {
         itemChoose()
 
 
+        // inquirer returns a list of which item the user would like to buy ---------------
         function itemChoose() {
         
             inquirer.prompt([
@@ -64,6 +69,7 @@ function startBamazon() {
                     }
                 }
                 
+                // for loop matches the selected items from the users input and matches with database item -----------
             ]).then(function(answers) {
                 connection.query("SELECT * FROM products", function(err , results) {
 
@@ -86,6 +92,7 @@ function startBamazon() {
                     }
 
 
+                    // if input is valid product is "purchased" and stock quanitity of item is reflected --------------
                     if (userQty <= currentQty && userQty > 0) {
 
                         connection.query(
@@ -132,6 +139,8 @@ function startBamazon() {
 
 }
 
+
+// function ran at the end of the transaction to check if user would like to make another ---------------
 function endBamazon() {
 
     inquirer.prompt([
