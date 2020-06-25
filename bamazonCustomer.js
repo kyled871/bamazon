@@ -28,14 +28,15 @@ function startBamazon() {
     connection.query("SELECT * FROM products", function(err, response) {
         if (err) throw err;
 
+        console.log("\n*** Welcome to Bamazon! ***\n\n")
 
-        let showAllItems = () => {
-            console.log("\n*** Welcome to Bamazon! ***\n\n")
-            response.forEach(items => {
-                console.log(`ID: ${items.item_id}\nItem: ${items.product_name}\nDeptartment: ${items.department_name}\nPrice: ${items.price}\nQty: ${items.stock_quantity}\n\n`)
-            });
-        }
-        showAllItems()
+        // let showAllItems = () => {
+        //     
+        //     response.forEach(items => {
+        //         console.log(`ID: ${items.item_id}\nItem: ${items.product_name}\nDeptartment: ${items.department_name}\nPrice: ${items.price}\nQty: ${items.stock_quantity}\n\n`)
+        //     });
+        // }
+        // showAllItems()
         itemChoose()
 
 
